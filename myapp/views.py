@@ -166,6 +166,9 @@ class ApplicationVerificationFunction(APIView):
         return responseReturn(status=400,result='failed',message=serializer.errors)
 
 
-class ApplicantsListView(generics.ListAPIView):
-    queryset = Applicants.objects.all() 
-    serializer_class = ApplicantsSerializer
+class ApplicantsListView(APIView):
+    def get(self,request):
+        queryset = Applicants.objects.all() 
+        serializer_class = ApplicantsSerializer(queryset,many=True)
+        return responseReturn(data=serializer_class.data)
+    
