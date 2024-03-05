@@ -22,7 +22,7 @@ def responseReturn(status=None, message=None, result=None, data=None):
 
     response_map = {
         "status": status if status is not None else default_status,
-        "message": message if message is not None else default_message,
+        "message": f"${message}" if message is not None else default_message,
         "result": result if result is not None else default_result,
         "data": data
     }
@@ -59,7 +59,7 @@ def VerifyOtpFunction(request):
             user,created = User.objects.get_or_create(username=mobile_number,defaults={'password': '1@12345'})
             token, created = Token.objects.get_or_create(user=user)
 
-            return responseReturn(message='OTP verified successfully',data=token.key)
+            return responseReturn(message='OTP verified successfully',data={"token":token.key})
         else:
             return responseReturn(status=400,result="Failed",message="Wrong OTP")
 
