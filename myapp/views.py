@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from .models import *
 from .serializers import *
-from rest_framework import viewsets,response,status
+from rest_framework import viewsets,response,status,generics
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
 import random
@@ -22,7 +22,7 @@ def responseReturn(status=None, message=None, result=None, data=None):
 
     response_map = {
         "status": status if status is not None else default_status,
-        "message": f"${message}" if message is not None else default_message,
+        "message": f"{message}" if message is not None else default_message,
         "result": result if result is not None else default_result,
         "data": data
     }
@@ -164,3 +164,8 @@ class ApplicationVerificationFunction(APIView):
             serializer.save()
             return responseReturn(data=serializer.data,message="Application save succesfully")
         return responseReturn(status=400,result='failed',message=serializer.errors)
+
+
+class ApplicantsListView(generics.ListAPIView):
+    queryset = Applicants.objects.all() 
+    serializer_class = ApplicantsSerializer

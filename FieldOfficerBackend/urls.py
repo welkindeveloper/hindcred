@@ -32,6 +32,7 @@ urlpatterns = [
     path('send_otp/',SendOtpFunction),
     path('verify_otp/',VerifyOtpFunction),
     path('application/',ApplicationVerificationFunction.as_view()),
+    path('applicants/', ApplicantsListView.as_view(), name='applicants-list'),
     path('upload/', ImageUploadView.as_view(), name='image-upload'),
 
     # path('api-auth/', include('rest_framework.urls')),

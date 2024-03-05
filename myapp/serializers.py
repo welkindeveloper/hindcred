@@ -15,3 +15,8 @@ class ApplicationVerificationSerializer(serializers.ModelSerializer):
     class Meta:
         model = ApplicationVerification
         fields = '__all__'
+
+class ApplicantsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Applicants
+        fields = '__all__'
