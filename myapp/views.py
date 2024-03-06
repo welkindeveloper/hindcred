@@ -81,7 +81,7 @@ class ApplicationVerificationFunction(APIView):
         
         applicant = request.data.get('applicant')
         step = request.data.get('step')
-        step=int(f"{step}")
+        step=int(step)
         if not applicant:
             return responseReturn(status=400,result="failed",message="applicant Id is Null")
         
@@ -154,7 +154,8 @@ class ApplicationVerificationFunction(APIView):
             return responseReturn(status=400, result="failed", message="Invalid Step")
 
         instance = ApplicationVerification.objects.filter(applicant_id=applicant).first()
-        if instance.step==6:
+
+        if instance is not None and instance.step==6:
             return responseReturn(status=400, result="failed", message="Application already applied")
         if not instance:
             serializer= ApplicationVerificationSerializer(data=request.data,partial=True)
