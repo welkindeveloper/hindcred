@@ -81,7 +81,7 @@ class ApplicationVerificationFunction(APIView):
         
         applicant = request.data.get('applicant')
         step = request.data.get('step')
-        step=int(step)
+        step=int(f"{step}")
         if not applicant:
             return responseReturn(status=400,result="failed",message="applicant Id is Null")
         
