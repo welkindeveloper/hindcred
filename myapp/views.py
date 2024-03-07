@@ -82,7 +82,7 @@ class ApplicantsListView(APIView):
         serializer_class = ApplicantsSerializer(queryset,many=True)
         return responseReturn(data=serializer_class.data)
     
-    
+
 
 class ApplicationVerificationFunction(APIView):
     def get(self,request):
@@ -119,7 +119,11 @@ class ApplicationVerificationFunction(APIView):
             pan_number = request.data.get('pan_number')
             pan_front = request.data.get('pan_front')
             pan_back = request.data.get('pan_back')
-            if not pan_number or not pan_front or not pan_back:
+            if instance.pan_front is None and pan_front is None:
+                return responseReturn(status=400,result="failed",message=" pan_front is required")
+            if instance.pan_back is None and pan_back is None:
+                return responseReturn(status=400,result="failed",message=" pan_back is required")
+            if not pan_number:
                 return responseReturn(status=400,result="failed",message="pan_number, pan_front, and pan_back are required")
             if len(pan_number) != 10:
                 return responseReturn(status=400,result="failed",message="Invalid Pan Number length")

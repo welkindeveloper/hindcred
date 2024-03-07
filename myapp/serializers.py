@@ -18,14 +18,6 @@ class ApplicantsSerializer(serializers.ModelSerializer):
 
 
 class ApplicationVerificationSerializer(serializers.ModelSerializer):
-    # pan_front = serializers.SerializerMethodField()
-    # pan_back = serializers.SerializerMethodField()
-    # aadhar_front = serializers.SerializerMethodField()
-    # aadhar_back = serializers.SerializerMethodField()
-    # voter_front = serializers.SerializerMethodField()
-    # voter_back = serializers.SerializerMethodField()
-    # selfie = serializers.SerializerMethodField()
-    # business_pic = serializers.SerializerMethodField()
 
     class Meta:
         model = ApplicationVerification
