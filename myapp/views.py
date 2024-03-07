@@ -80,7 +80,7 @@ class ApplicationVerificationFunction(APIView):
         applicant = request.GET.get('applicant')
         print(applicant)
         instance = ApplicationVerification.objects.filter(applicant_id=applicant).first()
-        return responseReturn(data=ApplicationVerificationSerializer(instance).data)
+        return responseReturn(data=ApplicationVerificationSerializer(instance,context={'request': request}).data)
 
 
 
@@ -168,9 +168,9 @@ class ApplicationVerificationFunction(APIView):
 
         
         if not instance:
-            serializer= ApplicationVerificationSerializer(data=request.data,partial=True)
+            serializer= ApplicationVerificationSerializer(data=request.data,partial=True,context={'request': request})
         else:
-            serializer= ApplicationVerificationSerializer(instance,data=request.data,partial=True)
+            serializer= ApplicationVerificationSerializer(instance,data=request.data,partial=True,context={'request': request})
         if serializer.is_valid():
             serializer.save()
             return responseReturn(data=serializer.data,message="Application save succesfully")
