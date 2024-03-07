@@ -76,12 +76,25 @@ class ImageUploadView(APIView):
     
 
 class ApplicationVerificationFunction(APIView):
+    def get(self,request):
+        applicant = request.GET.get('applicant')
+        print(applicant)
+        instance = ApplicationVerification.objects.filter(applicant_id=applicant).first()
+        return responseReturn(data=ApplicationVerificationSerializer(instance).data)
+
+
 
     def post(self,request,*args,**kwargs):
         
         applicant = request.data.get('applicant')
         step = request.data.get('step')
         step=int(step)
+
+        instance = ApplicationVerification.objects.filter(applicant_id=applicant).first()
+        if instance is not None and instance.step==6:
+            return responseReturn(status=400, result="failed", message="Application already applied")
+        
+        
         if not applicant:
             return responseReturn(status=400,result="failed",message="applicant Id is Null")
         
@@ -153,10 +166,7 @@ class ApplicationVerificationFunction(APIView):
         if step > 6:
             return responseReturn(status=400, result="failed", message="Invalid Step")
 
-        instance = ApplicationVerification.objects.filter(applicant_id=applicant).first()
-
-        if instance is not None and instance.step==6:
-            return responseReturn(status=400, result="failed", message="Application already applied")
+        
         if not instance:
             serializer= ApplicationVerificationSerializer(data=request.data,partial=True)
         else:
