@@ -119,47 +119,60 @@ class ApplicationVerificationFunction(APIView):
             pan_number = request.data.get('pan_number')
             pan_front = request.data.get('pan_front')
             pan_back = request.data.get('pan_back')
-            if instance.pan_front is None and pan_front is None:
-                return responseReturn(status=400,result="failed",message=" pan_front is required")
-            if instance.pan_back is None and pan_back is None:
-                return responseReturn(status=400,result="failed",message=" pan_back is required")
             if not pan_number:
-                return responseReturn(status=400,result="failed",message="pan_number, pan_front, and pan_back are required")
+                return responseReturn(status=400,result="failed",message="pan_number required")
             if len(pan_number) != 10:
                 return responseReturn(status=400,result="failed",message="Invalid Pan Number length")
+            if not instance and not pan_front or instance and not instance.pan_front and not pan_front:
+                return responseReturn(status=400,result="failed",message=" pan_front is required")
+            if not instance and not pan_back or instance and not instance.pan_back and not pan_back:
+                return responseReturn(status=400,result="failed",message=" pan_back is required")
        
         if step == 2:
             aadhar_number = request.data.get('aadhar_number')
             aadhar_front = request.data.get('aadhar_front')
             aadhar_back = request.data.get('aadhar_back')
-            if not aadhar_number or not aadhar_front or not aadhar_back:
-                return responseReturn(status=400,result="failed",message="aadhar_number, aadhar_front, and aadhar_back are required")
+            if not aadhar_number:
+                return responseReturn(status=400,result="failed",message="aadhar_number required")
             if len(aadhar_number) != 12:
-                return responseReturn(status=400,result="failed",message="Invalid Aadhar Number length")
+                return responseReturn(status=400,result="failed",message="Invalid Aadhaar Number length")
+            
+            if not instance and not aadhar_front or instance and not instance.aadhar_front and not aadhar_front:
+                return responseReturn(status=400,result="failed",message=" aadhar_front is required")
+            if not instance and not aadhar_back or instance and not instance.aadhar_back and not aadhar_back:
+                return responseReturn(status=400,result="failed",message=" aadhar_back is required")
         
         if step == 3:
             voter_id = request.data.get('voter_id')
             voter_front = request.data.get('voter_front')
-            voter_back = request.data.get('aadhar_back')
-            if not voter_id or not voter_front or not voter_back:
-                return responseReturn(status=400,result="failed",message="voter_id, voter_front, and voter_back are required")
+            voter_back = request.data.get('voter_back')
+            if not voter_id:
+                return responseReturn(status=400,result="failed",message="voter_id required")
             if len(voter_id) != 10:
                 return responseReturn(status=400,result="failed",message="Invalid Voter ID length")
+            
+            if not instance and not voter_front or instance and not instance.voter_front and not voter_front:
+                return responseReturn(status=400,result="failed",message=" voter_front is required")
+            if not instance and not voter_back or instance and not instance.voter_back and not voter_back:
+                return responseReturn(status=400,result="failed",message=" voter_back is required")
         
         if step == 4:
             selfie = request.data.get('selfie')
-            if not selfie:
-                return responseReturn(status=400,result="failed",message="selfie required")
+            if not instance and not selfie or instance and not instance.selfie and not selfie:
+                return responseReturn(status=400,result="failed",message=" selfie is required")
         
         if step == 5:
             business_type = request.data.get('business_type')
             business_name = request.data.get('business_name')
             business_address = request.data.get('business_address')
             business_pic = request.data.get('business_pic')
-            if not business_type or not business_name or not business_address or not business_pic:
-                return responseReturn(status=400,result="failed",message="business_type, business_name, business_address and business_pic are required")
+            if not business_type or not business_name or not business_address:
+                return responseReturn(status=400,result="failed",message="business_type, business_name and business_address are required")
+            if not instance and not business_pic or instance and not instance.business_pic and not business_pic:
+                return responseReturn(status=400,result="failed",message=" business_pic is required")
             if len(business_name) < 3:
                 return responseReturn(status=400,result="failed",message="business_name too short")
+            
         
         if step == 6:
             two_wheeler = request.data.get('two_wheeler')
