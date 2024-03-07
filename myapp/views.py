@@ -75,6 +75,15 @@ class ImageUploadView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
 
+
+class ApplicantsListView(APIView):
+    def get(self,request):
+        queryset = Applicants.objects.all() 
+        serializer_class = ApplicantsSerializer(queryset,many=True)
+        return responseReturn(data=serializer_class.data)
+    
+    
+
 class ApplicationVerificationFunction(APIView):
     def get(self,request):
         applicant = request.GET.get('applicant')
@@ -176,10 +185,4 @@ class ApplicationVerificationFunction(APIView):
             return responseReturn(data=serializer.data,message="Application save succesfully")
         return responseReturn(status=400,result='failed',message=serializer.errors)
 
-
-class ApplicantsListView(APIView):
-    def get(self,request):
-        queryset = Applicants.objects.all() 
-        serializer_class = ApplicantsSerializer(queryset,many=True)
-        return responseReturn(data=serializer_class.data)
     
