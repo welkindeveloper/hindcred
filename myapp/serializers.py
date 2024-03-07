@@ -52,3 +52,4 @@ class ApplicationVerificationSerializer(serializers.ModelSerializer):
 
     def get_business_pic(self, obj):
         return self.get_image_url(obj, 'business_pic')
+    

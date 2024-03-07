@@ -10,7 +10,6 @@ from rest_framework.authtoken.models import Token
 from rest_framework.views import APIView
 from django.conf import settings
 
-
 # class SendOtpViewSet(viewsets.ModelViewSet):
 #     queryset = SendOtpModel.objects.all()
 #     serializer_class = SendOtpSerializer

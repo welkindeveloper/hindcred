@@ -65,3 +65,4 @@ class ApplicationVerification(models.Model):
 
     def __str__(self):
         return f"step {self.step} : {self.applicant.first_name}"
+
