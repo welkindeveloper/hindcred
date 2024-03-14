@@ -77,10 +77,35 @@ WSGI_APPLICATION = 'FieldOfficerBackend.wsgi.application'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
 DATABASES = {
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.sqlite3',
+    #     'NAME': BASE_DIR / 'db.sqlite3',
+    # }
+
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'hindcred',
+        'USER': 'admin',
+        'PASSWORD': '8PluJvBm',
+        'HOST':'mysql-165530-0.cloudclusters.net',
+        'PORT':'10038',
     }
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.mysql',
+    #     'NAME': 'swadeshivip_loan_staging',
+    #     'USER': 'swadeshivip_loan_staging',
+    #     'PASSWORD': 'G}Y)X2p0Y0Rm',
+    #     'HOST':'35.173.69.207',
+    #     'PORT':'3306',
+    # }
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.mysql',
+    #     'NAME': 'hindcred',
+    #     'USER': 'root',
+    #     'PASSWORD': 'password',
+    #     'HOST':'127.0.0.1',
+    #     'PORT':'3306',
+    # }
 }
 
 

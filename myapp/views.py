@@ -9,7 +9,90 @@ from django.contrib.auth.models import User
 from rest_framework.authtoken.models import Token
 from rest_framework.views import APIView
 from django.conf import settings
+from django.db import connection
 
+
+
+raw_query = """ SELECT  (
+                SELECT COUNT(*)
+                FROM   customers where status=1
+                ) AS new_application,
+
+                (
+                SELECT COUNT(*)
+                FROM   customers where agent_id=11 and status =5
+                ) AS done_application,
+
+                (
+                SELECT COUNT(*)
+                FROM  assign_emi_pendings WHERE emp_id=2
+                ) AS no_of_customer ,
+
+                (
+                SELECT COUNT(*)
+                FROM  collection_transactions WHERE collected_by=0
+                ) AS total_collaction ,  
+
+                (
+                SELECT SUM(collect_amount)
+                FROM  collection_transactions WHERE collected_by=0
+                ) AS total_collaction ,
+
+                (
+                select count(*) from disbursements where no_emi_pending <=3 
+                ) as zero_three, 
+
+                (
+                select count(*) from disbursements where no_emi_pending >=4 and no_emi_pending <=7 
+                ) as four_seven,
+
+                (
+                select count(*) from disbursements where no_emi_pending >=8 and no_emi_pending <=14
+                ) as eight_fourteen,
+
+                (
+                select count(*) from disbursements where no_emi_pending >=15 and no_emi_pending <=29
+                ) as fifteen_twentynine,
+
+                (
+                select count(*) from disbursements where no_emi_pending >=30 and no_emi_pending <=59
+                ) as thirty_fiftynine,
+
+                (
+                select count(*) from disbursements where no_emi_pending >=60 and no_emi_pending <=90
+                ) as sixty_ninety,
+
+                (
+                select count(*) from disbursements where no_emi_pending >90 
+                ) as ninety_plus
+
+                FROM  DUAL;
+                """
+with connection.cursor() as cursor:
+    cursor.execute(raw_query)
+
+    columns = [col[0] for col in cursor.description]
+    results = cursor.fetchall()
+    # print(columns)
+    # print(results)
+    for row in results:
+        print("HOW MAY TIME")
+        data = {
+            columns[0]: row[0],
+            columns[1]: row[1],
+            columns[2]: row[2],
+            columns[3]: row[3],
+            columns[4]: row[4],
+            columns[5]: row[5],
+            columns[6]: row[6],
+            columns[7]: row[7],
+            columns[8]: row[8],
+            columns[9]: row[9],
+            columns[10]: row[10],
+            columns[11]: row[11]
+            }
+    # print(data)
+                
 # class SendOtpViewSet(viewsets.ModelViewSet):
 #     queryset = SendOtpModel.objects.all()
 #     serializer_class = SendOtpSerializer
@@ -65,13 +148,13 @@ def VerifyOtpFunction(request):
     return responseReturn(status=400,result="Failed",message="Mobile Number does Not Exists")
 
 
-class ImageUploadView(APIView):
-    def post(self, request, *args, **kwargs):
-        serializer = ImageSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+# class ImageUploadView(APIView):
+#     def post(self, request, *args, **kwargs):
+#         serializer = ImageSerializer(data=request.data)
+#         if serializer.is_valid():
+#             serializer.save()
+#             return Response(serializer.data, status=status.HTTP_201_CREATED)
+#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
 
 
@@ -202,3 +285,85 @@ class ApplicationVerificationFunction(APIView):
         return responseReturn(status=400,result='failed',message=serializer.errors)
 
     
+
+class dashboardFunction(APIView):
+    def get(self,request):
+        raw_query = """ SELECT  (
+                SELECT COUNT(*)
+                FROM   customers where status=1
+                ) AS new_application,
+
+                (
+                SELECT COUNT(*)
+                FROM   customers where agent_id=11 and status =5
+                ) AS done_application,
+
+                (
+                SELECT COUNT(*)
+                FROM  assign_emi_pendings WHERE emp_id=2
+                ) AS no_of_customer ,
+
+                (
+                SELECT COUNT(*)
+                FROM  collection_transactions WHERE collected_by=0
+                ) AS total_collection ,  
+
+                (
+                SELECT SUM(collect_amount)
+                FROM  collection_transactions WHERE collected_by=0
+                ) AS collected_amount ,
+
+                (
+                select count(*) from disbursements where no_emi_pending <=3 
+                ) as zero_three, 
+
+                (
+                select count(*) from disbursements where no_emi_pending >=4 and no_emi_pending <=7 
+                ) as four_seven,
+
+                (
+                select count(*) from disbursements where no_emi_pending >=8 and no_emi_pending <=14
+                ) as eight_fourteen,
+
+                (
+                select count(*) from disbursements where no_emi_pending >=15 and no_emi_pending <=29
+                ) as fifteen_twentynine,
+
+                (
+                select count(*) from disbursements where no_emi_pending >=30 and no_emi_pending <=59
+                ) as thirty_fiftynine,
+
+                (
+                select count(*) from disbursements where no_emi_pending >=60 and no_emi_pending <=90
+                ) as sixty_ninety,
+
+                (
+                select count(*) from disbursements where no_emi_pending >90 
+                ) as ninety_plus
+
+                FROM  DUAL;
+                """
+        with connection.cursor() as cursor:
+            cursor.execute(raw_query)
+
+            columns = [col[0] for col in cursor.description]
+            results = cursor.fetchall()
+            print(columns)
+            print(results)
+            for row in results:
+                data = {
+                    columns[0]: row[0],
+                    columns[1]: row[1],
+                    columns[2]: row[2],
+                    columns[3]: row[3],
+                    columns[4]: row[4],
+                    columns[5]: row[5],
+                    columns[6]: row[6],
+                    columns[7]: row[7],
+                    columns[8]: row[8],
+                    columns[9]: row[9],
+                    columns[10]: row[10],
+                    columns[11]: row[11]
+                    }
+                return responseReturn(data=data)
+        return responseReturn(status=400,result="failed",message="Something went wrong")

@@ -7,10 +7,12 @@ class SendOtpModel(models.Model):
 
     def __str__(self):
         return self.mobileNumber
+    class Meta:
+        db_table = 'sendotpmodel'
 
 
-class Image(models.Model):
-    image = models.ImageField(upload_to='images/')
+# class Image(models.Model):
+    # image = models.ImageField(upload_to='images/')
 
 
 class Applicants(models.Model):
@@ -29,6 +31,9 @@ class Applicants(models.Model):
 
     def __str__(self):
         return f"{dict(self.CHOICES).get(self.status)} : {self.first_name}"
+    
+    class Meta:
+        db_table = 'applicants'
     
 
 class ApplicationVerification(models.Model):
@@ -65,4 +70,7 @@ class ApplicationVerification(models.Model):
 
     def __str__(self):
         return f"step {self.step} : {self.applicant.first_name}"
+    
+    class Meta:
+        db_table = 'applicationVerification'
 
