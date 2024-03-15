@@ -42,7 +42,7 @@ class ApplicationVerification(models.Model):
         ('0', 'No')
     ]
 
-    applicant=models.OneToOneField(Applicants,on_delete=models.CASCADE)
+    applicant=models.CharField(max_length=100)
     pan_number=models.CharField(max_length=10)
     pan_front = models.ImageField(upload_to='images/')
     pan_back = models.ImageField(upload_to='images/')
