@@ -93,7 +93,7 @@ class ApplicantsListView(APIView):
             for row in results:
                 data = {col: val for col, val in zip(columns, row)}
                 list.append(data)
-            return responseReturn(data=data)
+            return responseReturn(data=list)
     
 
 
