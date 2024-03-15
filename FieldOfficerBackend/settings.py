@@ -111,10 +111,10 @@ DATABASES = {
         'NAME': 'hindcred',
         'USER': 'welkindeveloper',
         'PASSWORD': 'password',
-        'HOST':'127.0.0.1',
+        'HOST':'welkindeveloper.mysql.pythonanywhere-services.com',
         'PORT':'3306',
     }
-    
+
 }
 
 
