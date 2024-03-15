@@ -82,14 +82,14 @@ DATABASES = {
     #     'NAME': BASE_DIR / 'db.sqlite3',
     # }
 
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'hindcred',
-        'USER': 'admin',
-        'PASSWORD': '8PluJvBm',
-        'HOST':'mysql-165530-0.cloudclusters.net',
-        'PORT':'10038',
-    }
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.mysql',
+    #     'NAME': 'hindcred',
+    #     'USER': 'admin',
+    #     'PASSWORD': '8PluJvBm',
+    #     'HOST':'mysql-165530-0.cloudclusters.net',
+    #     'PORT':'10038',
+    # }
     # 'default': {
     #     'ENGINE': 'django.db.backends.mysql',
     #     'NAME': 'swadeshivip_loan_staging',
@@ -106,14 +106,14 @@ DATABASES = {
     #     'HOST':'127.0.0.1',
     #     'PORT':'3306',
     # }
-    # 'default': {
-    #     'ENGINE': 'django.db.backends.mysql',
-    #     'NAME': 'welkindeveloper$hindcred',
-    #     'USER': 'welkindeveloper',
-    #     'PASSWORD': 'hindcredenterslice',
-    #     'HOST':'welkindeveloper.mysql.pythonanywhere-services.com',
-    #     'PORT':'3306',
-    # }
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'welkindeveloper$hindcred',
+        'USER': 'welkindeveloper',
+        'PASSWORD': 'hindcredenterslice',
+        'HOST':'welkindeveloper.mysql.pythonanywhere-services.com',
+        'PORT':'3306',
+    }
 
 }
 
