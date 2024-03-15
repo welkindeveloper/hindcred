@@ -92,7 +92,7 @@ class ApplicantsListView(APIView):
             for row in results:
                 data = {col: val for col, val in zip(columns, row)}
                 return responseReturn(data=data)
-        return responseReturn(data={"serializer_class.data":"dsad"})
+        return responseReturn(status=200,result="Failed",data="No Data found")
     
 
 
