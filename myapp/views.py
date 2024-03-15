@@ -83,12 +83,15 @@ class ApplicantsListView(APIView):
         with connection.cursor() as cursor:
             cursor.execute(raw_query)
         results = cursor.fetchall()
-        # print(results)
-          
-        # for row in results:
-
-        # queryset = Applicants.objects.all() 
-        # serializer_class = ApplicantsSerializer(queryset,many=True)
+        with connection.cursor() as cursor:
+            cursor.execute(raw_query)
+            columns = [col[0] for col in cursor.description]
+            results = cursor.fetchall()
+            print(columns)
+            print(results)
+            for row in results:
+                data = {col: val for col, val in zip(columns, row)}
+                return responseReturn(data=data)
         return responseReturn(data={"serializer_class.data":"dsad"})
     
 
@@ -275,22 +278,7 @@ class dashboardFunction(APIView):
 
             columns = [col[0] for col in cursor.description]
             results = cursor.fetchall()
-            print(columns)
-            print(results)
             for row in results:
-                data = {
-                    columns[0]: row[0],
-                    columns[1]: row[1],
-                    columns[2]: row[2],
-                    columns[3]: row[3],
-                    columns[4]: row[4],
-                    columns[5]: row[5],
-                    columns[6]: row[6],
-                    columns[7]: row[7],
-                    columns[8]: row[8],
-                    columns[9]: row[9],
-                    columns[10]: row[10],
-                    columns[11]: row[11]
-                    }
+                data = {col: val for col, val in zip(columns, row)}
                 return responseReturn(data=data)
         return responseReturn(status=400,result="failed",message="Something went wrong")
