@@ -79,9 +79,17 @@ def VerifyOtpFunction(request):
 
 class ApplicantsListView(APIView):
     def get(self,request):
-        queryset = Applicants.objects.all() 
-        serializer_class = ApplicantsSerializer(queryset,many=True)
-        return responseReturn(data=serializer_class.data)
+        raw_query="SELECT * FROM customers where status=1"
+        with connection.cursor() as cursor:
+            cursor.execute(raw_query)
+        results = cursor.fetchall()
+        # print(results)
+          
+        # for row in results:
+
+        # queryset = Applicants.objects.all() 
+        # serializer_class = ApplicantsSerializer(queryset,many=True)
+        return responseReturn(data={"serializer_class.data":"dsad"})
     
 
 
