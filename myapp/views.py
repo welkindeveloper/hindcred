@@ -99,31 +99,26 @@ class ApplicantsListView(APIView):
 
 class ApplicationVerificationFunction(APIView):
     def get(self,request):
-        applicant = request.GET.get('applicant')
-        print(applicant)
-        instance = ApplicationVerification.objects.filter(applicant_id=applicant).first()
+        applicant_id = request.GET.get('applicant_id')
+        print(applicant_id)
+        instance = ApplicationVerification.objects.filter(applicant_id=applicant_id).first()
         return responseReturn(data=ApplicationVerificationSerializer(instance,context={'request': request}).data)
 
 
 
     def post(self,request,*args,**kwargs):
         
-        applicant = request.data.get('applicant')
+        applicant_id = request.data.get('applicant_id')
         step = request.data.get('step')
         step=int(step)
 
-        instance = ApplicationVerification.objects.filter(applicant_id=applicant).first()
+    
+        instance = ApplicationVerification.objects.filter(applicant_id=applicant_id).first()
         if instance is not None and instance.step==6:
             return responseReturn(status=400, result="failed", message="Application already applied")
         
-        
-        if not applicant:
+        if not applicant_id:
             return responseReturn(status=400,result="failed",message="applicant Id is Null")
-        
-        instanceApplicants = Applicants.objects.get(applicant_id=applicant)
-        if not instanceApplicants:
-            return responseReturn(status=400,result="failed",message="applicant Id does not exists")
-        
 
         if not step or step == 0:
             return responseReturn(status=400,result="failed",message="step is required")

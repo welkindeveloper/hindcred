@@ -42,7 +42,7 @@ class ApplicationVerification(models.Model):
         ('0', 'No')
     ]
 
-    applicant=models.CharField(max_length=100)
+    applicant_id=models.CharField(max_length=100)
     pan_number=models.CharField(max_length=10)
     pan_front = models.ImageField(upload_to='images/')
     pan_back = models.ImageField(upload_to='images/')
@@ -69,7 +69,7 @@ class ApplicationVerification(models.Model):
     step=models.IntegerField(default=0)
 
     def __str__(self):
-        return f"step {self.step} : {self.applicant.first_name}"
+        return f"step {self.step} : {self.applicant_id}"
     
     class Meta:
         db_table = 'applicationVerification'
