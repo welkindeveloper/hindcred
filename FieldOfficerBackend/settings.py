@@ -98,22 +98,22 @@ DATABASES = {
     #     'HOST':'35.173.69.207',
     #     'PORT':'3306',
     # }
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'hindcred',
-        'USER': 'root',
-        'PASSWORD': 'password',
-        'HOST':'127.0.0.1',
-        'PORT':'3306',
-    }
     # 'default': {
     #     'ENGINE': 'django.db.backends.mysql',
-    #     'NAME': 'welkindeveloper$hindcred',
-    #     'USER': 'welkindeveloper',
-    #     'PASSWORD': 'hindcredenterslice',
-    #     'HOST':'welkindeveloper.mysql.pythonanywhere-services.com',
+    #     'NAME': 'hindcred',
+    #     'USER': 'root',
+    #     'PASSWORD': 'password',
+    #     'HOST':'127.0.0.1',
     #     'PORT':'3306',
     # }
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'welkindeveloper$hindcred',
+        'USER': 'welkindeveloper',
+        'PASSWORD': 'hindcredenterslice',
+        'HOST':'welkindeveloper.mysql.pythonanywhere-services.com',
+        'PORT':'3306',
+    }
 
 }
 
