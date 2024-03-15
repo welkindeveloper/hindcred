@@ -110,7 +110,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'hindcred',
         'USER': 'welkindeveloper',
-        'PASSWORD': 'password123',
+        'PASSWORD': 'hindcredenterslice',
         'HOST':'welkindeveloper.mysql.pythonanywhere-services.com',
         'PORT':'3306',
     }
