@@ -83,6 +83,7 @@ class ApplicantsListView(APIView):
         with connection.cursor() as cursor:
             cursor.execute(raw_query)
         results = cursor.fetchall()
+        list=[]
         with connection.cursor() as cursor:
             cursor.execute(raw_query)
             columns = [col[0] for col in cursor.description]
@@ -91,8 +92,8 @@ class ApplicantsListView(APIView):
             print(results)
             for row in results:
                 data = {col: val for col, val in zip(columns, row)}
-                return responseReturn(data=data)
-        return responseReturn(status=200,result="Failed",data="No Data found")
+                list.append(data)
+            return responseReturn(data=data)
     
 
 
@@ -219,22 +220,22 @@ class ApplicationVerificationFunction(APIView):
 class dashboardFunction(APIView):
     def get(self,request):
         raw_query = """ SELECT  (
-                SELECT COUNT(id)
+                SELECT COUNT(*)
                 FROM   customers where status=1
                 ) AS new_application,
 
                 (
-                SELECT COUNT(id)
+                SELECT COUNT(*)
                 FROM   customers where agent_id=11 and status =5
                 ) AS done_application,
 
                 (
-                SELECT COUNT(id)
+                SELECT COUNT(*)
                 FROM  assign_emi_pendings WHERE emp_id=2
                 ) AS no_of_customer ,
 
                 (
-                SELECT COUNT(id)
+                SELECT COUNT(*)
                 FROM  collection_transactions WHERE collected_by=0
                 ) AS total_collection ,  
 
@@ -243,16 +244,33 @@ class dashboardFunction(APIView):
                 FROM  collection_transactions WHERE collected_by=0
                 ) AS collected_amount ,
 
-                SELECT
-                    SUM(CASE WHEN no_emi_pending <= 3 THEN 1 ELSE 0 END) AS zero_three,
-                    SUM(CASE WHEN no_emi_pending BETWEEN 4 AND 7 THEN 1 ELSE 0 END) AS four_seven,
-                    SUM(CASE WHEN no_emi_pending BETWEEN 8 AND 14 THEN 1 ELSE 0 END) AS eight_fourteen,
-                    SUM(CASE WHEN no_emi_pending BETWEEN 15 AND 29 THEN 1 ELSE 0 END) AS fifteen_twentynine,
-                    SUM(CASE WHEN no_emi_pending BETWEEN 30 AND 59 THEN 1 ELSE 0 END) AS thirty_fiftynine,
-                    SUM(CASE WHEN no_emi_pending BETWEEN 60 AND 90 THEN 1 ELSE 0 END) AS sixty_ninety,
-                    SUM(CASE WHEN no_emi_pending > 90 THEN 1 ELSE 0 END) AS ninety_plus
-                FROM
-                    disbursements;
+                (
+                select count(*) from disbursements where no_emi_pending <=3 
+                ) as zero_three, 
+
+                (
+                select count(*) from disbursements where no_emi_pending >=4 and no_emi_pending <=7 
+                ) as four_seven,
+
+                (
+                select count(*) from disbursements where no_emi_pending >=8 and no_emi_pending <=14
+                ) as eight_fourteen,
+
+                (
+                select count(*) from disbursements where no_emi_pending >=15 and no_emi_pending <=29
+                ) as fifteen_twentynine,
+
+                (
+                select count(*) from disbursements where no_emi_pending >=30 and no_emi_pending <=59
+                ) as thirty_fiftynine,
+
+                (
+                select count(*) from disbursements where no_emi_pending >=60 and no_emi_pending <=90
+                ) as sixty_ninety,
+
+                (
+                select count(*) from disbursements where no_emi_pending >90 
+                ) as ninety_plus
 
                 FROM  DUAL;
                 """
