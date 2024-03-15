@@ -214,60 +214,25 @@ class ApplicationVerificationFunction(APIView):
 
 class dashboardFunction(APIView):
     def get(self,request):
-        raw_query = """ SELECT  (
-                SELECT COUNT(*)
-                FROM   customers where status=1
-                ) AS new_application,
-
-                (
-                SELECT COUNT(*)
-                FROM   customers where agent_id=11 and status =5
-                ) AS done_application,
-
-                (
-                SELECT COUNT(*)
-                FROM  assign_emi_pendings WHERE emp_id=2
-                ) AS no_of_customer ,
-
-                (
-                SELECT COUNT(*)
-                FROM  collection_transactions WHERE collected_by=0
-                ) AS total_collection ,  
-
-                (
-                SELECT SUM(collect_amount)
-                FROM  collection_transactions WHERE collected_by=0
-                ) AS collected_amount ,
-
-                (
-                select count(*) from disbursements where no_emi_pending <=3 
-                ) as zero_three, 
-
-                (
-                select count(*) from disbursements where no_emi_pending >=4 and no_emi_pending <=7 
-                ) as four_seven,
-
-                (
-                select count(*) from disbursements where no_emi_pending >=8 and no_emi_pending <=14
-                ) as eight_fourteen,
-
-                (
-                select count(*) from disbursements where no_emi_pending >=15 and no_emi_pending <=29
-                ) as fifteen_twentynine,
-
-                (
-                select count(*) from disbursements where no_emi_pending >=30 and no_emi_pending <=59
-                ) as thirty_fiftynine,
-
-                (
-                select count(*) from disbursements where no_emi_pending >=60 and no_emi_pending <=90
-                ) as sixty_ninety,
-
-                (
-                select count(*) from disbursements where no_emi_pending >90 
-                ) as ninety_plus
-
-                FROM  DUAL;
+        raw_query = """ SELECT
+    SUM(CASE WHEN customers.status = 1 THEN 1 ELSE 0 END) AS new_application,
+    SUM(CASE WHEN agent_id = 11 AND customers.status = 5 THEN 1 ELSE 0 END) AS done_application,
+    (SELECT COUNT(*) FROM assign_emi_pendings WHERE emp_id = 2) AS no_of_customer,
+    COUNT(CASE WHEN collected_by = 0 THEN 1 END) AS total_collection,
+    SUM(CASE WHEN collected_by = 0 THEN collect_amount ELSE 0 END) AS collected_amount,
+    SUM(CASE WHEN no_emi_pending <= 3 THEN 1 ELSE 0 END) AS zero_three,
+    SUM(CASE WHEN no_emi_pending BETWEEN 4 AND 7 THEN 1 ELSE 0 END) AS four_seven,
+    SUM(CASE WHEN no_emi_pending BETWEEN 8 AND 14 THEN 1 ELSE 0 END) AS eight_fourteen,
+    SUM(CASE WHEN no_emi_pending BETWEEN 15 AND 29 THEN 1 ELSE 0 END) AS fifteen_twentynine,
+    SUM(CASE WHEN no_emi_pending BETWEEN 30 AND 59 THEN 1 ELSE 0 END) AS thirty_fiftynine,
+    SUM(CASE WHEN no_emi_pending BETWEEN 60 AND 90 THEN 1 ELSE 0 END) AS sixty_ninety,
+    SUM(CASE WHEN no_emi_pending > 90 THEN 1 ELSE 0 END) AS ninety_plus
+    FROM
+    customers,
+    collection_transactions,
+    disbursements
+    WHERE
+        collected_by = 0;
                 """
         with connection.cursor() as cursor:
             cursor.execute(raw_query)
