@@ -217,7 +217,7 @@ class dashboardFunction(APIView):
         raw_query = """ SELECT  (
                 SELECT COUNT(*)
                 FROM   customers where status=1
-                ) AS new_application,
+                ) AS under_approval,
 
                 (
                 SELECT COUNT(*)
