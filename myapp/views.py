@@ -292,5 +292,6 @@ class NoOfCustomers(APIView):
             results = cursor.fetchall()
             for row in results:
                 data = {col: val for col, val in zip(columns, row)}
-                return responseReturn(data=data)
+            return responseReturn(data=data)
+            
         return responseReturn(status=400,result="failed",message="Something went wrong")
