@@ -294,5 +294,5 @@ class NoOfCustomers(APIView):
 
 class TotalCollection(APIView):
     def get(self,request):
-        raw_query="SELECT * FROM  collection_transactions WHERE collected_by=0"
+        raw_query=""" SELECT collection_transactions.*, apply_loans.application_code,customers.id as customer_id,CONCAT(COALESCE(customers.fname,''),' ',COALESCE(customers.lname,'')) as customer_name,customers.cust_mobile FROM `collection_transactions` INNER JOIN disbursements ON collection_transactions.disburse_id=disbursements.id INNER JOIN apply_loans ON disbursements.application_id = apply_loans.id INNER JOIN customers ON apply_loans.customer_id = customers.id WHERE 1=1 AND collection_transactions.collected_by='0'; """
         return requestDatabase(raw_query=raw_query)
