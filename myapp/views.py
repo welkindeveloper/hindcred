@@ -232,7 +232,7 @@ class dashboardFunction(APIView):
 
                 (
                 SELECT COUNT(*)
-                FROM  assign_emi_pendings WHERE emp_id=2
+                FROM  assign_emi_pendings WHERE emp_id=11
                 ) AS no_of_customer ,
 
                 (
