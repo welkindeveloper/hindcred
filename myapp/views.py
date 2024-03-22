@@ -290,7 +290,7 @@ class NoOfCustomers(APIView):
 
             columns = [col[0] for col in cursor.description]
             results = cursor.fetchall()
-            data={}
+            data=None
             for row in results:
                 data = {col: val for col, val in zip(columns, row)}
             return responseReturn(data=data)
