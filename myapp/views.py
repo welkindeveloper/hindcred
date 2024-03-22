@@ -42,7 +42,7 @@ def requestDatabase(raw_query):
         for row in results:
             data = {col: val for col, val in zip(columns, row)}
             list.append(data)
-            return responseReturn(data=data)
+            return responseReturn(data=list)
     return responseReturn(status=400,result="failed",message="Something went wrong")
 
 @api_view(['POST'])
