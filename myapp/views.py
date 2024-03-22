@@ -299,3 +299,28 @@ class TotalCollection(APIView):
         raw_query=""" SELECT collection_transactions.*, apply_loans.application_code,customers.id as customer_id,CONCAT(COALESCE(customers.fname,''),' ',COALESCE(customers.lname,'')) as customer_name,customers.cust_mobile FROM `collection_transactions` INNER JOIN disbursements ON collection_transactions.disburse_id=disbursements.id INNER JOIN apply_loans ON disbursements.application_id = apply_loans.id INNER JOIN customers ON apply_loans.customer_id = customers.id WHERE 1=1 AND collection_transactions.collected_by='0'; """
         return requestDatabase(raw_query=raw_query)
 
+class CollectionAgeing(APIView):
+    def get(self,request):
+        ageing = request.GET.get('ageing')
+        if not ageing:
+            return responseReturn(status=400,result="Failed",message="ageing required")
+        whareCondtion=''
+        if ageing=="1" :
+            whareCondtion="no_emi_pending <=3"
+        elif ageing=='2':
+            whareCondtion="no_emi_pending >=4 and no_emi_pending <=7 "
+        elif ageing=='3':
+            whareCondtion="no_emi_pending >=8 and no_emi_pending <=14"
+        elif ageing=='4':
+            whareCondtion="no_emi_pending >=15 and no_emi_pending <=29"
+        elif ageing=='5':
+            whareCondtion="no_emi_pending >=30 and no_emi_pending <=59"
+        elif ageing=='6':
+            whareCondtion="no_emi_pending >=60 and no_emi_pending <=90"
+        elif ageing=='7':
+            whareCondtion="no_emi_pending >90 "
+        else:
+            return responseReturn(status=400,result="Failed",message="Wrong ageing data")
+        
+        raw_query=f"select * from disbursements where {whareCondtion}"
+        return requestDatabase(raw_query=raw_query)
