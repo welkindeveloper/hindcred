@@ -289,9 +289,9 @@ class dashboardFunction(APIView):
 
 class NoOfCustomers(APIView):
     def get(self,request):
-        # raw_query="SELECT * FROM  assign_emi_pendings WHERE emp_id=2"
-        raw_query="SELECT assign_emi_pendings.*, apply_loans.application_code,customers.id as customer_id,CONCAT(COALESCE(customers.fname,''),' ',COALESCE(customers.lname,'')) as customer_name,customers.cust_mobile FROM `assign_emi_pendings` INNER JOIN disbursements ON assign_emi_pendings.disburse_id=disbursements.id INNER JOIN apply_loans ON disbursements.application_id = apply_loans.id INNER JOIN customers ON apply_loans.customer_id = customers.id WHERE 1=1 AND assign_emi_pendings.emp_id='2';"
-        raw_query="INSERT INTO assign_emi_pendings (disburse_id, emp_id, follow_up_date, follow_type, follow_up_content, status) VALUES (5, 11, '2024-03-22', 1, 'going to receive', 0);"
+    
+        raw_query="SELECT assign_emi_pendings.*, apply_loans.application_code,customers.id as customer_id,CONCAT(COALESCE(customers.fname,''),' ',COALESCE(customers.lname,'')) as customer_name,customers.cust_mobile FROM `assign_emi_pendings` INNER JOIN disbursements ON assign_emi_pendings.disburse_id=disbursements.id INNER JOIN apply_loans ON disbursements.application_id = apply_loans.id INNER JOIN customers ON apply_loans.customer_id = customers.id WHERE 1=1 AND assign_emi_pendings.emp_id='11';"
+        # raw_query="INSERT INTO assign_emi_pendings (disburse_id, emp_id, follow_up_date, follow_type, follow_up_content, status) VALUES (5, 11, '2024-03-22', 1, 'going to receive', 0);"
         # return requestDatabase(raw_query=raw_query)
         with connection.cursor() as cursor:
             cursor.execute(raw_query)
