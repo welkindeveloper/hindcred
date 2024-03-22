@@ -286,4 +286,4 @@ class dashboardFunction(APIView):
 class NoOfCustomers(APIView):
     def get(self,request):
         raw_query="SELECT * FROM  assign_emi_pendings WHERE emp_id=2"
-        requestDatabase(raw_query=raw_query)
+        return requestDatabase(raw_query=raw_query)
