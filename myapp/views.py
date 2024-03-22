@@ -292,20 +292,10 @@ class NoOfCustomers(APIView):
     
         raw_query="SELECT assign_emi_pendings.*, apply_loans.application_code,customers.id as customer_id,CONCAT(COALESCE(customers.fname,''),' ',COALESCE(customers.lname,'')) as customer_name,customers.cust_mobile FROM `assign_emi_pendings` INNER JOIN disbursements ON assign_emi_pendings.disburse_id=disbursements.id INNER JOIN apply_loans ON disbursements.application_id = apply_loans.id INNER JOIN customers ON apply_loans.customer_id = customers.id WHERE 1=1 AND assign_emi_pendings.emp_id='11';"
         # raw_query="INSERT INTO assign_emi_pendings (disburse_id, emp_id, follow_up_date, follow_type, follow_up_content, status) VALUES (5, 11, '2024-03-22', 1, 'going to receive', 0);"
-        # return requestDatabase(raw_query=raw_query)
-        with connection.cursor() as cursor:
-            cursor.execute(raw_query)
-
-            columns = [col[0] for col in cursor.description]
-            results = cursor.fetchall()
-            data=None
-            list=[]
-            for row in results:
-                data = {col: val for col, val in zip(columns, row)}
-                list.append(data)
-            return responseReturn(data=list)
+        return requestDatabase(raw_query=raw_query)
 
 class TotalCollection(APIView):
     def get(self,request):
         raw_query=""" SELECT collection_transactions.*, apply_loans.application_code,customers.id as customer_id,CONCAT(COALESCE(customers.fname,''),' ',COALESCE(customers.lname,'')) as customer_name,customers.cust_mobile FROM `collection_transactions` INNER JOIN disbursements ON collection_transactions.disburse_id=disbursements.id INNER JOIN apply_loans ON disbursements.application_id = apply_loans.id INNER JOIN customers ON apply_loans.customer_id = customers.id WHERE 1=1 AND collection_transactions.collected_by='0'; """
         return requestDatabase(raw_query=raw_query)
+
