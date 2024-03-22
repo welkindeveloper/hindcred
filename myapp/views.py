@@ -44,7 +44,8 @@ def requestDatabase(raw_query):
                 data = {col: val for col, val in zip(columns, row)}
                 list.append(data)
             return responseReturn(data=list)
-    except:
+    except Exception as e:
+        print(e)
         return responseReturn(status=400,result="failed",message="Something went wrong")
 
 @api_view(['POST'])
@@ -305,6 +306,7 @@ class CollectionAgeing(APIView):
         if not ageing:
             return responseReturn(status=400,result="Failed",message="ageing required")
         whareCondtion=''
+        
         if ageing=="1" :
             whareCondtion="no_emi_pending <=3"
         elif ageing=='2':
@@ -322,5 +324,10 @@ class CollectionAgeing(APIView):
         else:
             return responseReturn(status=400,result="Failed",message="Wrong ageing data")
         
-        raw_query=f"select * from disbursements where {whareCondtion}"
+        raw_query = f"""SELECT  apply_loans.application_code,customers.cust_mobile, CONCAT_WS(
+                ' ',
+               COALESCE(customers.fname, ''),  
+               NULLIF(customers.mname, ''),
+               COALESCE(customers.lname, '')
+           ) AS full_name,disbursements.*  FROM disbursements INNER JOIN apply_loans ON disbursements.application_id = apply_loans.customer_id INNER JOIN customers ON customers.id = apply_loans.customer_id WHERE {whareCondtion}"""
         return requestDatabase(raw_query=raw_query)
