@@ -287,3 +287,8 @@ class NoOfCustomers(APIView):
     def get(self,request):
         raw_query="SELECT * FROM  assign_emi_pendings WHERE emp_id=2"
         return requestDatabase(raw_query=raw_query)
+
+class TotalCollection(APIView):
+    def get(self,request):
+        raw_query="SELECT * FROM  collection_transactions WHERE collected_by=0"
+        return requestDatabase(raw_query=raw_query)

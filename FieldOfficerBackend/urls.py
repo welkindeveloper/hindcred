@@ -35,6 +35,7 @@ urlpatterns = [
     path('applicants', ApplicantsListView.as_view(), name='applicants-list'),
     path('dashboard', dashboardFunction.as_view()),
     path('no_of_customers', NoOfCustomers.as_view()),
+    path('total_collection', TotalCollection.as_view()),
     # path('upload', ImageUploadView.as_view(), name='image-upload'),
 
     # path('api-auth/', include('rest_framework.urls')),
