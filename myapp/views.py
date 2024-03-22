@@ -30,6 +30,18 @@ def responseReturn(status=None, message=None, result=None, data=None):
 
     return Response(response_map)
 
+
+def requestDatabase(raw_query):
+    with connection.cursor() as cursor:
+        cursor.execute(raw_query)
+
+        columns = [col[0] for col in cursor.description]
+        results = cursor.fetchall()
+        for row in results:
+            data = {col: val for col, val in zip(columns, row)}
+            return responseReturn(data=data)
+    return responseReturn(status=400,result="failed",message="Something went wrong")
+
 @api_view(['POST'])
 def SendOtpFunction(request):
     mobile_number = request.data.get("mobileNumber")
@@ -66,20 +78,9 @@ def VerifyOtpFunction(request):
 
     return responseReturn(status=400,result="Failed",message="Mobile Number does Not Exists")
 
-
-# class ImageUploadView(APIView):
-#     def post(self, request, *args, **kwargs):
-#         serializer = ImageSerializer(data=request.data)
-#         if serializer.is_valid():
-#             serializer.save()
-#             return Response(serializer.data, status=status.HTTP_201_CREATED)
-#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
-
-
 class ApplicantsListView(APIView):
     def get(self,request):
-        raw_query="SELECT * FROM customers where status=1"
+        raw_query="SELECT * FROM customers where status=2"
         with connection.cursor() as cursor:
             cursor.execute(raw_query)
         results = cursor.fetchall()
@@ -216,7 +217,7 @@ class dashboardFunction(APIView):
     def get(self,request):
         raw_query = """ SELECT  (
                 SELECT COUNT(*)
-                FROM   customers where status=1
+                FROM   customers where status=2
                 ) AS under_approval,
 
                 (
@@ -278,3 +279,10 @@ class dashboardFunction(APIView):
                 data = {col: val for col, val in zip(columns, row)}
                 return responseReturn(data=data)
         return responseReturn(status=400,result="failed",message="Something went wrong")
+    
+
+
+class NoOfCustomers(APIView):
+    def get(self,request):
+        raw_query="SELECT * FROM  assign_emi_pendings WHERE emp_id=2"
+        requestDatabase(raw_query=raw_query)
