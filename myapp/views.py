@@ -285,4 +285,12 @@ class dashboardFunction(APIView):
 class NoOfCustomers(APIView):
     def get(self,request):
         raw_query="SELECT * FROM  assign_emi_pendings WHERE emp_id=2"
-        return requestDatabase(raw_query=raw_query)
+        with connection.cursor() as cursor:
+            cursor.execute(raw_query)
+
+            columns = [col[0] for col in cursor.description]
+            results = cursor.fetchall()
+            for row in results:
+                data = {col: val for col, val in zip(columns, row)}
+                return responseReturn(data=data)
+        return responseReturn(status=400,result="failed",message="Something went wrong")
