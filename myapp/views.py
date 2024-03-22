@@ -32,18 +32,20 @@ def responseReturn(status=None, message=None, result=None, data=None):
 
 
 def requestDatabase(raw_query):
-    with connection.cursor() as cursor:
-        cursor.execute(raw_query)
+    try:
+        with connection.cursor() as cursor:
+            cursor.execute(raw_query)
 
-        columns = [col[0] for col in cursor.description]
-        results = cursor.fetchall()
-        data=None
-        list=[]
-        for row in results:
-            data = {col: val for col, val in zip(columns, row)}
-            list.append(data)
+            columns = [col[0] for col in cursor.description]
+            results = cursor.fetchall()
+            data=None
+            list=[]
+            for row in results:
+                data = {col: val for col, val in zip(columns, row)}
+                list.append(data)
             return responseReturn(data=list)
-    return responseReturn(status=400,result="failed",message="Something went wrong")
+    except:
+        return responseReturn(status=400,result="failed",message="Something went wrong")
 
 @api_view(['POST'])
 def SendOtpFunction(request):
