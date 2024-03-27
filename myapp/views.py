@@ -329,5 +329,5 @@ class CollectionAgeing(APIView):
                COALESCE(customers.fname, ''),  
                NULLIF(customers.mname, ''),
                COALESCE(customers.lname, '')
-           ) AS full_name,disbursements.*  FROM disbursements INNER JOIN apply_loans ON disbursements.application_id = apply_loans.customer_id INNER JOIN customers ON customers.id = apply_loans.customer_id WHERE {whareCondtion}"""
+           ) AS full_name, (customers.id) as cust_id ,disbursements.*  FROM disbursements INNER JOIN apply_loans ON disbursements.application_id = apply_loans.customer_id INNER JOIN customers ON customers.id = apply_loans.customer_id WHERE {whareCondtion}"""
         return requestDatabase(raw_query=raw_query)
